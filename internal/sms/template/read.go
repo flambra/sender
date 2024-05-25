@@ -22,9 +22,9 @@ func Read(c *fiber.Ctx) error {
 	}
 
 	var template domain.SMSTemplate
-	institutionRepo := hRepository.New(hDb.Get(), &template, c)
+	repo := hRepository.New(hDb.Get(), &template, c)
 
-	err = institutionRepo.GetById(id)
+	err = repo.GetById(id)
 	if err != nil {
 		return hResp.InternalServerErrorResponse(c, err.Error())
 	}
