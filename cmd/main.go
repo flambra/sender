@@ -25,7 +25,7 @@ func init() {
 	}
 
 	err = hDb.Migrate(
-		&domain.TemplateEmail{},
+		&domain.EmailTemplate{},
 		&domain.SMSTemplate{},
 	)
 	if err != nil {

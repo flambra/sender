@@ -21,8 +21,8 @@ func Update(c *fiber.Ctx) error {
 		return hResp.BadRequestResponse(c, err.Error())
 	}
 
-	var template domain.TemplateEmail
-	var request domain.TemplateEmailUpdateRequest
+	var template domain.EmailTemplate
+	var request domain.EmailTemplateUpdateRequest
 	repo := hRepository.New(hDb.Get(), &template, c)
 
 	err = repo.GetById(id)
@@ -44,7 +44,7 @@ func Update(c *fiber.Ctx) error {
 	return hResp.SuccessResponse(c, &template)
 }
 
-func updateTemplate(t *domain.TemplateEmail, request domain.TemplateEmailUpdateRequest) {
+func updateTemplate(t *domain.EmailTemplate, request domain.EmailTemplateUpdateRequest) {
 	if request.Name != "" {
 		t.Name = request.Name
 	}

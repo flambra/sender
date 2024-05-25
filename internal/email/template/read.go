@@ -21,7 +21,7 @@ func Read(c *fiber.Ctx) error {
 		return hResp.BadRequestResponse(c, err.Error())
 	}
 
-	var template domain.TemplateEmail
+	var template domain.EmailTemplate
 	institutionRepo := hRepository.New(hDb.Get(), &template, c)
 
 	err = institutionRepo.GetById(id)

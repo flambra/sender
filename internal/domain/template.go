@@ -7,7 +7,7 @@ import (
 )
 
 // EMAIL
-type TemplateEmail struct {
+type EmailTemplate struct {
 	ID        uint `gorm:"primarykey"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
@@ -17,13 +17,13 @@ type TemplateEmail struct {
 	Body      string
 }
 
-type TemplateEmailCreateRequest struct {
+type EmailTemplateCreateRequest struct {
 	Name    string `form:"name"`
 	Subject string `form:"subject"`
 	Body    string `form:"body"`
 }
 
-type TemplateEmailUpdateRequest struct {
+type EmailTemplateUpdateRequest struct {
 	Name    string `form:"name"`
 	Subject string `form:"subject"`
 	Body    string `form:"body"`

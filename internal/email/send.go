@@ -13,7 +13,7 @@ import (
 
 func Send(c *fiber.Ctx) error {
 	var request domain.EmailRequest
-	var templateEmail domain.TemplateEmail
+	var templateEmail domain.EmailTemplate
 	repo := hRepository.New(hDb.Get(), &templateEmail, c)
 
 	if err := c.BodyParser(&request); err != nil {
@@ -38,7 +38,7 @@ func Send(c *fiber.Ctx) error {
 	m.SetBody("text/html", body)
 
 	dialer := gomail.NewDialer(SMTP.Host, SMTP.Port, SMTP.Username, SMTP.Password)
-	
+
 	if err := dialer.DialAndSend(m); err != nil {
 		return hResp.InternalServerErrorResponse(c, err.Error())
 	}

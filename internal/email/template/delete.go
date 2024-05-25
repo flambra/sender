@@ -21,7 +21,7 @@ func Delete(c *fiber.Ctx) error {
 		return hResp.BadRequestResponse(c, err.Error())
 	}
 
-	var template domain.TemplateEmail
+	var template domain.EmailTemplate
 	repo := hRepository.New(hDb.Get(), &template, c)
 
 	err = repo.Delete(id)

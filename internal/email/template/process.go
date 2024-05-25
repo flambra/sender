@@ -11,7 +11,7 @@ import (
 // It takes a template and recipient's name, then returns the processed HTML content.
 //
 //	func SendEmail() {
-//		templateEmail := domain.TemplateEmail{
+//		templateEmail := domain.EmailTemplate{
 //			Body: "<html><body>Welcome, {{.RecipientName}}!</body></html>",
 //		}
 //
@@ -23,7 +23,7 @@ import (
 //	}
 //
 // Welcome, John Doe!
-func Process(t domain.TemplateEmail, recipientName string) (string, error) {
+func Process(t domain.EmailTemplate, recipientName string) (string, error) {
 	if recipientName == "" {
 		return t.Body, nil
 	}

@@ -9,8 +9,8 @@ import (
 )
 
 func Create(c *fiber.Ctx) error {
-	var template domain.TemplateEmail
-	var request domain.TemplateEmailCreateRequest
+	var template domain.EmailTemplate
+	var request domain.EmailTemplateCreateRequest
 	repo := hRepository.New(hDb.Get(), &template, c)
 
 	if err := c.BodyParser(&request); err != nil {
@@ -21,7 +21,7 @@ func Create(c *fiber.Ctx) error {
 		return hResp.StatusConflict(c, &template, "Name already in use")
 	}
 
-	template = domain.TemplateEmail{
+	template = domain.EmailTemplate{
 		Name:    request.Name,
 		Subject: request.Subject,
 		Body:    request.Body,
