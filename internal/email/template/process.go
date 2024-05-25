@@ -14,7 +14,7 @@ import (
 //		templateEmail := domain.TemplateEmail{
 //			Body: "<html><body>Welcome, {{.RecipientName}}!</body></html>",
 //		}
-// 		
+//
 //		processedContent, err := Process(templateEmail, "John Doe")
 //		if err != nil {
 //			log.Fatalf("Failed to process template: %v", err)
@@ -24,6 +24,10 @@ import (
 //
 // Welcome, John Doe!
 func Process(t domain.TemplateEmail, recipientName string) (string, error) {
+	if recipientName == "" {
+		return t.Body, nil
+	}
+
 	tmpl, err := template.New("emailTemplate").Parse(t.Body)
 	if err != nil {
 		return "", err
