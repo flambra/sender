@@ -2,37 +2,43 @@ package email
 
 import (
 	"github.com/flambra/helpers/hDb"
-	"github.com/flambra/helpers/hResp"
 	"github.com/flambra/helpers/hRepository"
+	"github.com/flambra/helpers/hResp"
 	"github.com/flambra/sender/internal/domain"
+	"github.com/flambra/sender/internal/email/template"
 	"github.com/gofiber/fiber/v2"
 	"gopkg.in/gomail.v2"
 )
 
 func Send(c *fiber.Ctx) error {
-	var template domain.TemplateEmail
 	var request domain.EmailRequest
-	repo := hRepository.New(hDb.Get(), &template, c)
+	var templateEmail domain.TemplateEmail
+	templateRepo := hRepository.New(hDb.Get(), &templateEmail, c)
 
 	if err := c.BodyParser(&request); err != nil {
 		return hResp.BadRequestResponse(c, err.Error())
 	}
 
-	err := repo.GetWhere(fiber.Map{"name": request.TemplateName})
+	err := templateRepo.GetWhere(fiber.Map{"name": request.TemplateName})
 	if err != nil {
 		return hResp.InternalServerErrorResponse(c, "Template not found")
 	}
 
-	SMTP := GetSMTPConfig()
+	body, err := template.Process(templateEmail, request.RecipientName)
+	if err != nil {
+		return hResp.InternalServerErrorResponse(c, "Failed to process template")
+	}
 
+	SMTP := GetSMTPConfig()
 	m := gomail.NewMessage()
 	m.SetHeader("From", SMTP.From)
 	m.SetHeader("To", request.To)
-	m.SetHeader("Subject", request.Subject)
-	m.SetBody("text/html", template.Body)
+	m.SetHeader("Subject", templateEmail.Subject)
+	m.SetBody("text/html", body)
 
-	d := gomail.NewDialer(SMTP.Host, SMTP.Port, SMTP.Username, SMTP.Password)
-	if err := d.DialAndSend(m); err != nil {
+	dialer := gomail.NewDialer(SMTP.Host, SMTP.Port, SMTP.Username, SMTP.Password)
+	
+	if err := dialer.DialAndSend(m); err != nil {
 		return hResp.InternalServerErrorResponse(c, err.Error())
 	}
 
