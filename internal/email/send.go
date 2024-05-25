@@ -5,26 +5,27 @@ import (
 	"github.com/flambra/helpers/hRepository"
 	"github.com/flambra/helpers/hResp"
 	"github.com/flambra/sender/internal/domain"
-	"github.com/flambra/sender/internal/email/template"
 	"github.com/gofiber/fiber/v2"
 	"gopkg.in/gomail.v2"
+
+	emailTemplate "github.com/flambra/sender/internal/email/template"
 )
 
 func Send(c *fiber.Ctx) error {
 	var request domain.EmailRequest
 	var templateEmail domain.TemplateEmail
-	templateRepo := hRepository.New(hDb.Get(), &templateEmail, c)
+	repo := hRepository.New(hDb.Get(), &templateEmail, c)
 
 	if err := c.BodyParser(&request); err != nil {
 		return hResp.BadRequestResponse(c, err.Error())
 	}
 
-	err := templateRepo.GetWhere(fiber.Map{"name": request.TemplateName})
+	err := repo.GetWhere(fiber.Map{"name": request.TemplateName})
 	if err != nil {
 		return hResp.InternalServerErrorResponse(c, "Template not found")
 	}
 
-	body, err := template.Process(templateEmail, request.RecipientName)
+	body, err := emailTemplate.Process(templateEmail, request.RecipientName)
 	if err != nil {
 		return hResp.InternalServerErrorResponse(c, "Failed to process template")
 	}

@@ -26,6 +26,7 @@ func init() {
 
 	err = hDb.Migrate(
 		&domain.TemplateEmail{},
+		&domain.SMSTemplate{},
 	)
 	if err != nil {
 		log.Fatalf("Failed to migrate the database: %v", err)
