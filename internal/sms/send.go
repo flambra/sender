@@ -36,7 +36,7 @@ func Send(c *fiber.Ctx) error {
 		return hResp.InternalServerErrorResponse(c, "Failed to process template")
 	}
 
-	cfg, err := config.LoadDefaultConfig(context.TODO(), config.WithRegion("sa-east-1"))
+	cfg, err := config.LoadDefaultConfig(context.TODO())
 	if err != nil {
 		log.Fatalf("unable to load AWS SDK config, %v", err)
 		return err
