@@ -22,9 +22,9 @@ func Create(c *fiber.Ctx) error {
 	}
 
 	template = domain.TemplateEmail{
-		Name:  request.Name,
-		Title: request.Title,
-		Body:  request.Body,
+		Name:    request.Name,
+		Subject: request.Subject,
+		Body:    request.Body,
 	}
 
 	err := repo.Create()

@@ -12,18 +12,18 @@ type TemplateEmail struct {
 	UpdatedAt time.Time
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 	Name      string
-	Title     string
+	Subject   string
 	Body      string
 }
 
 type TemplateEmailCreateRequest struct {
-	Name  string `form:"name"`
-	Title string `form:"title"`
-	Body  string `form:"body"`
+	Name    string `form:"name"`
+	Subject string `form:"subject"`
+	Body    string `form:"body"`
 }
 
 type TemplateEmailUpdateRequest struct {
-	Name  string `form:"name"`
-	Title string `form:"title"`
-	Body  string `form:"body"`
+	Name    string `form:"name"`
+	Subject string `form:"subject"`
+	Body    string `form:"body"`
 }

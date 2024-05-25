@@ -48,8 +48,8 @@ func updateTemplate(t *domain.TemplateEmail, request domain.TemplateEmailUpdateR
 	if request.Name != "" {
 		t.Name = request.Name
 	}
-	if request.Title != "" {
-		t.Title = request.Title
+	if request.Subject != "" {
+		t.Subject = request.Subject
 	}
 	if request.Body != "" {
 		t.Body = request.Body
