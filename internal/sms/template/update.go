@@ -48,7 +48,7 @@ func updateTemplate(t *domain.SMSTemplate, request domain.SMSTemplateUpdateReque
 	if request.Name != "" {
 		t.Name = request.Name
 	}
-	if request.Text != "" {
-		t.Text = request.Text
+	if request.Message != "" {
+		t.Message = request.Message
 	}
 }

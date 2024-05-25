@@ -13,8 +13,8 @@ import (
 
 func Send(c *fiber.Ctx) error {
 	var request domain.EmailRequest
-	var templateEmail domain.EmailTemplate
-	repo := hRepository.New(hDb.Get(), &templateEmail, c)
+	var template domain.EmailTemplate
+	repo := hRepository.New(hDb.Get(), &template, c)
 
 	if err := c.BodyParser(&request); err != nil {
 		return hResp.BadRequestResponse(c, err.Error())
@@ -25,7 +25,7 @@ func Send(c *fiber.Ctx) error {
 		return hResp.InternalServerErrorResponse(c, "Template not found")
 	}
 
-	body, err := emailTemplate.Process(templateEmail, request.RecipientName)
+	body, err := emailTemplate.Process(template, request.Variables)
 	if err != nil {
 		return hResp.InternalServerErrorResponse(c, "Failed to process template")
 	}
@@ -34,7 +34,7 @@ func Send(c *fiber.Ctx) error {
 	m := gomail.NewMessage()
 	m.SetHeader("From", SMTP.From)
 	m.SetHeader("To", request.To)
-	m.SetHeader("Subject", templateEmail.Subject)
+	m.SetHeader("Subject", template.Subject)
 	m.SetBody("text/html", body)
 
 	dialer := gomail.NewDialer(SMTP.Host, SMTP.Port, SMTP.Username, SMTP.Password)

@@ -18,7 +18,7 @@ import (
 )
 
 func Send(c *fiber.Ctx) error {
-	var request domain.SmsRequest
+	var request domain.SMSRequest
 	var template domain.SMSTemplate
 	repo := hRepository.New(hDb.Get(), &template, c)
 
@@ -31,14 +31,14 @@ func Send(c *fiber.Ctx) error {
 		return hResp.InternalServerErrorResponse(c, "Template not found")
 	}
 
-	message, err := smsTemplate.Process(template, request.RecipientName)
+	message, err := smsTemplate.Process(template, request.Variables)
 	if err != nil {
 		return hResp.InternalServerErrorResponse(c, "Failed to process template")
 	}
 
 	cfg, err := config.LoadDefaultConfig(context.TODO(), config.WithRegion("sa-east-1"))
 	if err != nil {
-		log.Fatalf("unable to load SDK config, %v", err)
+		log.Fatalf("unable to load AWS SDK config, %v", err)
 		return err
 	}
 
@@ -57,7 +57,7 @@ func Send(c *fiber.Ctx) error {
 
 	_, err = client.Publish(context.TODO(), input)
 	if err != nil {
-		return err
+		return hResp.InternalServerErrorResponse(c, err.Error())
 	}
 
 	return hResp.SuccessResponse(c, "SMS sent successfully")

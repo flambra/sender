@@ -22,8 +22,8 @@ func Create(c *fiber.Ctx) error {
 	}
 
 	template = domain.SMSTemplate{
-		Name: request.Name,
-		Text: request.Text,
+		Name:    request.Name,
+		Message: request.Message,
 	}
 
 	err := repo.Create()

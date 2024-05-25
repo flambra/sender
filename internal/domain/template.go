@@ -36,15 +36,15 @@ type SMSTemplate struct {
 	UpdatedAt time.Time
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 	Name      string
-	Text      string
+	Message   string
 }
 
 type SMSTemplateCreateRequest struct {
-	Name string `form:"name"`
-	Text string `form:"text"`
+	Name    string `form:"name"`
+	Message string `form:"text"`
 }
 
 type SMSTemplateUpdateRequest struct {
-	Name string `form:"name"`
-	Text string `form:"text"`
+	Name    string `form:"name"`
+	Message string `form:"text"`
 }

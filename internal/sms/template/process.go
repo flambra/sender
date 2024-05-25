@@ -7,42 +7,22 @@ import (
 	"github.com/flambra/sender/internal/domain"
 )
 
-// Process replaces placeholders in the email template with actual values.
-// It takes a template and recipient's name, then returns the processed HTML content.
-//
-//	func SendEmail() {
-//		SMSTemplate := domain.SMSTemplate{
-//			Content: "Hello, {{.RecipientName}}!",
-//		}
-//
-//		processedContent, err := Process(SMSTemplate, "John Doe")
-//		if err != nil {
-//			log.Fatalf("Failed to process template: %v", err)
-//		}
-//		fmt.Println(processedContent)
-//	}
-//
-// Hello, John Doe!
-func Process(t domain.SMSTemplate, recipientName string) (string, error) {
-	if recipientName == "" {
-		return t.Text, nil
+// ProcessTemplate processes the SMS template with the provided variables.
+// It takes a template and a map of variables, then returns the processed text content.
+func Process(t domain.SMSTemplate, variables map[string]interface{}) (string, error) {
+	if len(variables) == 0 {
+		return t.Message, nil
 	}
 
-	tmpl, err := template.New("emailTemplate").Parse(t.Text)
+	tmpl, err := template.New("smsTemplate").Parse(t.Message)
 	if err != nil {
 		return "", err
 	}
 
-	var text bytes.Buffer
-	data := struct {
-		RecipientName string
-	}{
-		RecipientName: recipientName,
-	}
-
-	if err := tmpl.Execute(&text, data); err != nil {
+	var content bytes.Buffer
+	if err := tmpl.Execute(&content, variables); err != nil {
 		return "", err
 	}
 
-	return text.String(), nil
+	return content.String(), nil
 }

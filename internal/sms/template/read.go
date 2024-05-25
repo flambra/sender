@@ -29,5 +29,5 @@ func Read(c *fiber.Ctx) error {
 		return hResp.InternalServerErrorResponse(c, err.Error())
 	}
 
-	return c.SendString(template.Text)
+	return c.SendString(template.Message)
 }
