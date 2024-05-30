@@ -7,10 +7,13 @@ import (
 
 	"github.com/flambra/helpers/hDb"
 	"github.com/flambra/sender/internal"
+	"github.com/flambra/sender/internal/config"
 	"github.com/flambra/sender/internal/domain"
-	"github.com/flambra/sender/internal/email"
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
+
+	// Initialize the queues
+	_ "github.com/flambra/sender/internal/queue"
 )
 
 func init() {
@@ -33,7 +36,7 @@ func init() {
 		return
 	}
 
-	email.LoadSMTPConfig()
+	config.LoadSMTPConfig()
 }
 
 func main() {

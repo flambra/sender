@@ -1,4 +1,4 @@
-package email
+package config
 
 import (
 	"log"
@@ -37,6 +37,6 @@ func LoadSMTPConfig() {
 	}
 }
 
-func GetSMTPConfig() domain.SMTPConfig  {
+func GetSMTPConfig() domain.SMTPConfig {
 	return SMTP
 }
